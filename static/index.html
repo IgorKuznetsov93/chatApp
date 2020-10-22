@@ -24,7 +24,17 @@
                 <li v-for="error in errors">{{ error }}</li>
             </ul>
             </p>
+            <p>
+                <b>Подключеннные юзеры</b>
+            <ul>
+                <li style="margin: 3px" v-for="user in connectedUsers">{{ user }}
+                <button class="btn btn-primary" @click="createRoom(user)">Войти</button>
+                </li>
+            </ul>
+            </p>
             <div id="chat" v-if="accessToken">
+                <br>
+                <p v-if="room">Подключен к комнате {{ room.id }}</p>
                 <br>
                 <div class="card">
                     <div id="messages" class="card-block">

@@ -1,9 +1,14 @@
 import { EntityRepository, Repository } from 'typeorm';
-import {ConflictException, InternalServerErrorException, UnauthorizedException} from '@nestjs/common';
+import {
+  ConflictException,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { User } from './user.entity';
-import { AuthCredentialsDto } from './dto/auth-credentials.dto';
-import {JwtPayload} from "./jwt-payload.interface";
+import { User } from '../entity/user.entity';
+import { AuthCredentialsDto } from '../auth/dto/auth-credentials.dto';
+import { JwtPayload } from '../auth/jwt-payload.interface';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -35,13 +40,21 @@ export class UserRepository extends Repository<User> {
   }
 
   async findByUsername(payload: JwtPayload): Promise<User> {
-      const { username } = payload;
-      const user = await this.findOne({ username });
-      if (!user) {
-        throw new UnauthorizedException();
-      }
-      return user;
+    const { username } = payload;
+    const user = await this.findOne({ username });
+    if (!user) {
+      throw new UnauthorizedException();
     }
+    return user;
+  }
+
+  async findById(id: number): Promise<User> {
+    const user = await this.findOne({ id });
+    if (!user) {
+      throw new NotFoundException();
+    }
+    return user;
+  }
 
   private async hashPassword(password: string, salt: string) :Promise<string> {
     return bcrypt.hash(password, salt);

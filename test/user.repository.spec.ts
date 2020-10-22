@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
 import { ConflictException, InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { UserRepository } from './user.repository';
+import { UserRepository } from '../src/repositories/user.repository';
 
 const mockCredentialsDto = { username: 'TestUsername', password: 'TestPassword' };
 
