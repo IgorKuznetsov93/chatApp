@@ -9,4 +9,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   database: 'chatApp',
   entities: ['../**/*.entity.js'],
   synchronize: true,
+  logging: true
 };
